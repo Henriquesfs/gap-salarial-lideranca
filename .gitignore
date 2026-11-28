@@ -1,0 +1,26 @@
+# Credenciais: nunca versionar
+.env
+*.tfvars
+!*.tfvars.example
+.streamlit/secrets.toml
+
+# Terraform
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.terraform.tfstate.lock.info
+crash.log
+
+# Dados (baixados e gerados pelo ETL)
+data/raw/
+data/staging/
+data/final/
+data/logs/
+data/referencias/
+data/qualidade/
+
+# Python
+.venv/
+__pycache__/
+*.pyc

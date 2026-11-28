@@ -1,0 +1,8 @@
+# Copie para terraform.tfvars (que está no .gitignore) e preencha.
+# O token pode ficar fora deste arquivo: export TF_VAR_aiven_api_token="..."
+aiven_project = "nome-do-seu-projeto"
+
+# Opcional
+# pg_service_name         = "pg-gap-salarial"
+# pg_plan                 = "free-1-1gb"
+# opensearch_service_name = "os-gap-salarial"
