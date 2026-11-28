@@ -1,0 +1,33 @@
+name: Ingestão incremental do Novo CAGED
+
+# Roda toda segunda-feira. Se o MTE publicou um mês novo, ele é baixado, tratado e somado
+# ao banco. Se não, a execução só consulta o banco, o que evita que o serviço gratuito da
+# Aiven seja desligado por inatividade.
+on:
+  schedule:
+    - cron: "0 12 * * 1"
+  workflow_dispatch:
+
+jobs:
+  caged:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: etl/requirements.txt
+
+      - name: Instalar 7-Zip e dependências
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq p7zip-full
+          pip install -r etl/requirements.txt
+
+      - name: Ingestão incremental
+        run: python -m etl incremental
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DASHBOARD_DB_USER: ${{ secrets.DASHBOARD_DB_USER }}
