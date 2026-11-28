@@ -292,12 +292,12 @@ terraform -chdir=terraform apply
 
 Isso cria o serviço PostgreSQL no plano gratuito (`free-1-1gb`, nome conferido na API da Aiven), o banco `gap_salarial` e o usuário somente leitura `leitor_dashboard`.
 
-No nosso caso o serviço foi criado pelo Console, com o nome `pg-6d24ccb`. Como a conta era nova, o Console o abriu no plano `developer-1`, que é pago e estava sendo coberto pelo crédito de teste. O banco `gap_salarial` foi criado com `CREATE DATABASE` antes da primeira carga. Os dois entraram no estado do Terraform por importação. O `apply` criou o usuário do painel, aplicou as configurações do serviço e trocou o plano para `free-1-1gb` sem recriar o serviço, já que os 270 MB do banco cabem no disco de 1 GB:
+No nosso caso o serviço foi criado pelo Console, com um nome gerado pela Aiven (nos comandos abaixo, `pg-gap-salarial` e `seu-projeto` ficam no lugar dos nomes reais). Como a conta era nova, o Console o abriu no plano `developer-1`, que é pago e estava sendo coberto pelo crédito de teste. O banco `gap_salarial` foi criado com `CREATE DATABASE` antes da primeira carga. Os dois entraram no estado do Terraform por importação. O `apply` criou o usuário do painel, aplicou as configurações do serviço e trocou o plano para `free-1-1gb` sem recriar o serviço, já que os 270 MB do banco cabem no disco de 1 GB:
 
 ```bash
-# terraform.tfvars: aiven_project = "proton-c1bd" e pg_service_name = "pg-6d24ccb"
-terraform -chdir=terraform import aiven_pg.analytics proton-c1bd/pg-6d24ccb
-terraform -chdir=terraform import aiven_pg_database.gap proton-c1bd/pg-6d24ccb/gap_salarial
+# terraform.tfvars: aiven_project = "seu-projeto" e pg_service_name = "pg-gap-salarial"
+terraform -chdir=terraform import aiven_pg.analytics seu-projeto/pg-gap-salarial
+terraform -chdir=terraform import aiven_pg_database.gap seu-projeto/pg-gap-salarial/gap_salarial
 terraform -chdir=terraform apply
 python -m etl permissoes      # GRANT SELECT para o usuário recém-criado
 ```
@@ -367,4 +367,5 @@ dashboard/         app.py, consultas.py, metricas.py, estilo.py
 
 ## Equipe
 
-- (preencher)
+- Henrique Silva Fernandes
+- Mauricio Cardoso Barreto
